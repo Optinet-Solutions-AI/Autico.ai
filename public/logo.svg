@@ -1,19 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 56" fill="none">
-  <defs>
-    <linearGradient id="m" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#4FA8E8"/>
-      <stop offset="1" stop-color="#00E5CC"/>
-    </linearGradient>
-    <linearGradient id="t" x1="0" y1="0" x2="0" y2="56" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#F0F4FF"/>
-      <stop offset="1" stop-color="#00E5CC"/>
-    </linearGradient>
-  </defs>
   <g>
-    <path d="M28 4 L48 15 L48 41 L28 52 L8 41 L8 15 Z" fill="url(#m)"/>
+    <path d="M28 4 L48 15 L48 41 L28 52 L8 41 L8 15 Z" fill="#3DA0EC"/>
     <path d="M28 4 L48 15 L48 41 L28 52 L8 41 L8 15 Z" stroke="rgba(255,255,255,0.18)" stroke-width="1.2"/>
-    <path d="M19 41 L27 17 L31 17 L39 41 H34 L32 35 H24 L22 41 Z M25 30 H30 L27.5 22.5 Z" fill="#050810"/>
+    <path d="M19 41 L27 17 L31 17 L39 41 H34 L32 35 H24 L22 41 Z M25 30 H30 L27.5 22.5 Z" fill="#FFFFFF"/>
   </g>
-  <text x="64" y="36" fill="url(#t)" font-family="Clash Display, ui-sans-serif, sans-serif" font-weight="700" font-size="26" letter-spacing="-0.5">Autico</text>
-  <text x="166" y="36" fill="#00E5CC" font-family="Clash Display, ui-sans-serif, sans-serif" font-weight="700" font-size="26" letter-spacing="-0.5">.ai</text>
+  <text x="64" y="36" fill="#FFFFFF" font-family="Clash Display, ui-sans-serif, sans-serif" font-weight="700" font-size="26" letter-spacing="-0.5">Autico</text>
+  <text x="166" y="36" fill="#3DA0EC" font-family="Clash Display, ui-sans-serif, sans-serif" font-weight="700" font-size="26" letter-spacing="-0.5">.ai</text>
 </svg>

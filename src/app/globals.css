@@ -22,7 +22,13 @@
   --color-border: rgba(136, 146, 176, 0.15);
   --color-border-strong: rgba(136, 146, 176, 0.28);
 
-  /* PRIMARY ACCENT — cyan (openclaw brand) */
+  /* PRIMARY BRAND — bright sky blue (openclaw logo color) */
+  --color-blue: #3DA0EC;
+  --color-blue-hover: #5DB4F2;
+  --color-blue-soft: rgba(61, 160, 236, 0.15);
+  --color-blue-glow: rgba(61, 160, 236, 0.45);
+
+  /* SECONDARY UI ACCENT — cyan (icons, highlights, underlines) */
   --color-accent: #00e5cc;
   --color-accent-hover: #4dffe8;
   --color-accent-deep: #00a89a;
@@ -30,9 +36,9 @@
   --color-accent-glow: rgba(0, 229, 204, 0.45);
   --color-on-accent: #050810;
 
-  /* LOGO BLUE — for hex mark */
-  --color-logo-from: #4FA8E8;
-  --color-logo-to: #00e5cc;
+  /* Legacy aliases (still referenced by some components) */
+  --color-logo-from: #3DA0EC;
+  --color-logo-to: #3DA0EC;
 
   /* SECONDARY — coral (used sparingly: alerts, "new" badges) */
   --color-coral: #ff4d4d;
@@ -75,28 +81,18 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 8px; border: 2px solid var(--color-bg); }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-fg-dim); }
 
-/* Hero text gradient — openclaw signature: white → cyan */
-.hero-gradient-text {
-  background: linear-gradient(135deg, #f0f4ff 0%, #00e5cc 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+/* Solid-color text helpers (replace prior gradients per brand match) */
+.hero-gradient-text { color: #f0f4ff; }
+.logo-gradient-text { color: #f0f4ff; }
+.brand-blue { color: var(--color-blue); }
 
-.logo-gradient-text {
-  background: linear-gradient(135deg, var(--color-logo-from) 0%, var(--color-logo-to) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* Ambient glow — openclaw style */
+/* Ambient glow — openclaw style: blue + cyan */
 .ambient-glow {
   position: absolute; inset: 0; pointer-events: none;
   background:
-    radial-gradient(ellipse 60% 60% at 80% 30%, rgba(0, 229, 204, 0.14) 0%, transparent 60%),
-    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(79, 168, 232, 0.10) 0%, transparent 60%),
-    radial-gradient(ellipse 90% 70% at 50% 90%, rgba(0, 229, 204, 0.06) 0%, transparent 65%);
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(61, 160, 236, 0.16) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 60% at 80% 30%, rgba(0, 229, 204, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 90% 70% at 50% 90%, rgba(61, 160, 236, 0.06) 0%, transparent 65%);
 }
 
 .starfield {

@@ -13,29 +13,24 @@ export default function OG() {
           width: "100%",
           height: "100%",
           background: "#050810",
-          color: "#f0f4ff",
+          color: "#ffffff",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "70px",
           fontFamily: "ui-sans-serif, system-ui, sans-serif",
           backgroundImage:
-            "radial-gradient(ellipse 60% 60% at 80% 30%, rgba(0,229,204,0.18) 0%, transparent 60%), radial-gradient(ellipse 80% 50% at 20% 70%, rgba(79,168,232,0.14) 0%, transparent 60%)",
+            "radial-gradient(ellipse 80% 50% at 20% 20%, rgba(61,160,236,0.20) 0%, transparent 60%), radial-gradient(ellipse 60% 60% at 80% 80%, rgba(0,229,204,0.10) 0%, transparent 60%)",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <svg width="64" height="64" viewBox="0 0 64 64">
-            <defs>
-              <linearGradient id="og" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stopColor="#4FA8E8" />
-                <stop offset="1" stopColor="#00E5CC" />
-              </linearGradient>
-            </defs>
-            <path d="M32 4 L56 18 L56 46 L32 60 L8 46 L8 18 Z" fill="url(#og)" />
-            <path d="M22 46 L32 18 L36 18 L46 46 H40 L37.5 39 H26.5 L24 46 Z M28 33 H35 L31.5 23.5 Z" fill="#050810" />
+            <path d="M32 4 L56 18 L56 46 L32 60 L8 46 L8 18 Z" fill="#3DA0EC" />
+            <path d="M22 46 L32 18 L36 18 L46 46 H40 L37.5 39 H26.5 L24 46 Z M28 33 H35 L31.5 23.5 Z" fill="#FFFFFF" />
           </svg>
           <div style={{ fontSize: 36, fontWeight: 600, letterSpacing: -0.5 }}>
-            Autico<span style={{ color: "#00E5CC" }}>.ai</span>
+            <span style={{ color: "#FFFFFF" }}>Autico</span>
+            <span style={{ color: "#3DA0EC" }}>.ai</span>
           </div>
         </div>
 
@@ -47,10 +42,11 @@ export default function OG() {
               lineHeight: 1.05,
               letterSpacing: -2.5,
               maxWidth: 1000,
+              color: "#FFFFFF",
             }}
           >
             AI agents that ship work,{" "}
-            <span style={{ color: "#00E5CC" }}>not slides.</span>
+            <span style={{ color: "#3DA0EC" }}>not slides.</span>
           </div>
           <div style={{ fontSize: 26, color: "#8892b0", maxWidth: 900, lineHeight: 1.4 }}>
             Strategy · Build · Operate · 30+ AI blueprints, deployed in weeks.

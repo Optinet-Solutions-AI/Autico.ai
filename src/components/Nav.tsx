@@ -16,8 +16,8 @@ export default function Nav() {
         <Link href="/" className="flex items-center gap-2.5 group">
           <HexLogo size={34} className="transition group-hover:scale-105" />
           <span className="font-display text-[20px] font-semibold tracking-tight">
-            <span className="logo-gradient-text">Autico</span>
-            <span className="text-[var(--color-accent)]">.ai</span>
+            <span className="text-white">Autico</span>
+            <span className="text-[var(--color-blue)]">.ai</span>
           </span>
         </Link>
 
@@ -26,7 +26,7 @@ export default function Nav() {
             <Link
               key={l.href}
               href={l.href}
-              className="rounded-md px-3 py-1.5 text-[13.5px] font-medium text-[var(--color-fg-muted)] transition hover:text-[var(--color-fg)] hover:bg-white/5"
+              className="rounded-md px-3 py-1.5 text-[13.5px] font-medium text-[var(--color-fg-muted)] transition hover:text-white hover:bg-white/5"
             >
               {l.label}
             </Link>
@@ -36,13 +36,13 @@ export default function Nav() {
         <div className="flex items-center gap-2">
           <Link
             href="/#contact"
-            className="hidden sm:inline-flex h-9 items-center rounded-md border border-[var(--color-border-strong)] glass-card px-3.5 text-[13.5px] font-medium transition hover:text-[var(--color-accent)]"
+            className="hidden sm:inline-flex h-9 items-center rounded-md border border-[var(--color-border-strong)] glass-card px-3.5 text-[13.5px] font-medium text-white transition hover:text-[var(--color-accent)]"
           >
             Book a call
           </Link>
           <Link
             href="/showcase"
-            className="inline-flex h-9 items-center rounded-md bg-[var(--color-accent)] px-3.5 text-[13.5px] font-semibold text-[var(--color-on-accent)] transition hover:bg-[var(--color-accent-hover)]"
+            className="inline-flex h-9 items-center rounded-md bg-[var(--color-blue)] px-3.5 text-[13.5px] font-semibold text-white transition hover:bg-[var(--color-blue-hover)]"
           >
             See our work
           </Link>

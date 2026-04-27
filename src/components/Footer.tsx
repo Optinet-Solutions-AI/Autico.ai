@@ -30,15 +30,15 @@ const cols = [
 export default function Footer() {
   return (
     <footer className="relative bg-[var(--color-bg)] border-t border-[var(--color-border)]">
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/40 to-transparent" aria-hidden />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-blue)]/40 to-transparent" aria-hidden />
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid gap-10 md:grid-cols-[2fr_1fr_1fr_1fr]">
           <div>
             <Link href="/" className="flex items-center gap-2.5">
               <HexLogo size={34} />
               <span className="font-display text-[18px] font-semibold tracking-tight">
-                <span className="logo-gradient-text">Autico</span>
-                <span className="text-[var(--color-accent)]">.ai</span>
+                <span className="text-white">Autico</span>
+                <span className="text-[var(--color-blue)]">.ai</span>
               </span>
             </Link>
             <p className="mt-4 max-w-xs text-[14px] leading-relaxed text-[var(--color-fg-muted)]">
@@ -52,7 +52,7 @@ export default function Footer() {
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className="text-[14px] text-[var(--color-fg-muted)] transition hover:text-[var(--color-fg)]">
+                    <Link href={l.href} className="text-[14px] text-[var(--color-fg-muted)] transition hover:text-white">
                       {l.label}
                     </Link>
                   </li>
