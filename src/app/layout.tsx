@@ -58,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
           href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700&display=swap"
         />
+        <link rel="preload" as="image" href="/textures/shadow-mask.webp" type="image/webp" fetchPriority="low" />
         <JsonLd data={[organizationSchema, websiteSchema, professionalServiceSchema]} />
       </head>
       <body>

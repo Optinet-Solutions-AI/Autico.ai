@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useId, useEffect } from "react";
-import { animate, useMotionValue, type AnimationPlaybackControls } from "framer-motion";
 
 type AnimationConfig = { scale: number; speed: number };
 type NoiseConfig = { opacity: number; scale: number };
@@ -29,27 +28,38 @@ export default function EtherealShadows({
   const id = `ethereal-${useId().replace(/:/g, "")}`;
   const animationEnabled = !!animation && animation.scale > 0;
   const feColorMatrixRef = useRef<SVGFEColorMatrixElement>(null);
-  const hueRotate = useMotionValue(180);
-  const animRef = useRef<AnimationPlaybackControls | null>(null);
 
   const displacementScale = animation ? mapRange(animation.scale, 1, 100, 20, 100) : 0;
   const animationDuration = animation ? mapRange(animation.speed, 1, 100, 1000, 50) : 1;
 
+  // Plain rAF hue rotation — no framer-motion dependency. ~30 kB lighter bundle.
+  // Pauses when document is hidden to spare CPU/battery.
   useEffect(() => {
     if (!feColorMatrixRef.current || !animationEnabled) return;
-    animRef.current?.stop();
-    hueRotate.set(0);
-    animRef.current = animate(hueRotate, 360, {
-      duration: animationDuration / 25,
-      repeat: Infinity,
-      repeatType: "loop",
-      ease: "linear",
-      onUpdate: (value) => {
-        feColorMatrixRef.current?.setAttribute("values", String(value));
-      },
-    });
-    return () => animRef.current?.stop();
-  }, [animationEnabled, animationDuration, hueRotate]);
+    const cycleSeconds = animationDuration / 25;
+    const start = performance.now();
+    let raf = 0;
+    let isVisible = typeof document !== "undefined" && document.visibilityState === "visible";
+
+    const onVisibility = () => {
+      isVisible = document.visibilityState === "visible";
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    const tick = (now: number) => {
+      raf = requestAnimationFrame(tick);
+      if (!isVisible || !feColorMatrixRef.current) return;
+      const elapsed = (now - start) / 1000;
+      const value = ((elapsed / cycleSeconds) * 360) % 360;
+      feColorMatrixRef.current.setAttribute("values", String(value));
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [animationEnabled, animationDuration]);
 
   return (
     <div className={className} style={{ overflow: "hidden", position: "relative", width: "100%", height: "100%" }} aria-hidden>
@@ -58,6 +68,7 @@ export default function EtherealShadows({
           position: "absolute",
           inset: -displacementScale,
           filter: animationEnabled ? `url(#${id}) blur(4px)` : "none",
+          willChange: "filter",
         }}
       >
         {animationEnabled && (
@@ -102,8 +113,8 @@ export default function EtherealShadows({
         <div
           style={{
             backgroundColor: color,
-            maskImage: `url('/textures/shadow-mask.png')`,
-            WebkitMaskImage: `url('/textures/shadow-mask.png')`,
+            maskImage: `url('/textures/shadow-mask.webp')`,
+            WebkitMaskImage: `url('/textures/shadow-mask.webp')`,
             maskSize: sizing === "stretch" ? "100% 100%" : "cover",
             WebkitMaskSize: sizing === "stretch" ? "100% 100%" : "cover",
             maskRepeat: "no-repeat",
@@ -121,7 +132,7 @@ export default function EtherealShadows({
           style={{
             position: "absolute",
             inset: 0,
-            backgroundImage: `url("/textures/noise.png")`,
+            backgroundImage: `url('/textures/noise.webp')`,
             backgroundSize: noise.scale * 200,
             backgroundRepeat: "repeat",
             opacity: noise.opacity / 2,
