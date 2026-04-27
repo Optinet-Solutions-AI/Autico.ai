@@ -62,7 +62,7 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: var(--color-bg);
+  background: transparent;
   color: var(--color-fg);
   letter-spacing: -0.005em;
   line-height: 1.55;
