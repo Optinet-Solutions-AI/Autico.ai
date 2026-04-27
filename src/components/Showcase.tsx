@@ -1,15 +1,6 @@
 import Link from "next/link";
 import { products, type Product } from "@/lib/products";
 
-const categoryColors: Record<Product["category"], string> = {
-  agent: "from-cyan-500/20 to-cyan-500/5",
-  automation: "from-cyan-400/20 to-cyan-400/5",
-  vision: "from-blue-500/20 to-blue-500/5",
-  data: "from-blue-400/20 to-blue-400/5",
-  voice: "from-teal-400/20 to-teal-400/5",
-  ops: "from-emerald-400/20 to-emerald-400/5",
-};
-
 const statusLabel: Record<Product["status"], string> = {
   live: "Live",
   beta: "Beta",
@@ -30,7 +21,7 @@ export default function Showcase() {
               Each one is something we&rsquo;ve shipped, will ship, or can ship for you in under 30 days.
             </p>
           </div>
-          <Link href="/showcase" className="text-[14px] text-[var(--color-fg-muted)] hover:text-[var(--color-fg)] transition">
+          <Link href="/showcase" className="text-[14px] text-[var(--color-fg-muted)] hover:text-white transition">
             Browse the full library →
           </Link>
         </div>
@@ -40,11 +31,9 @@ export default function Showcase() {
             <Link
               key={p.slug}
               href={`/showcase/${p.slug}`}
-              className="group relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6 transition hover:border-[var(--color-border-strong)]"
+              className="glow-card group p-6 block"
             >
-              <div className={`pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b ${categoryColors[p.category]} opacity-0 transition group-hover:opacity-100`} aria-hidden />
-
-              <div className="relative flex items-center justify-between">
+              <div className="flex items-center justify-between">
                 <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--color-fg-dim)]">
                   {p.category}
                 </span>
@@ -59,14 +48,14 @@ export default function Showcase() {
                 </span>
               </div>
 
-              <h3 className="relative mt-3 font-display text-lg font-semibold tracking-tight transition group-hover:text-[var(--color-accent)]">
+              <h3 className="mt-3 font-display text-lg font-semibold tracking-tight transition group-hover:text-[var(--color-blue)]">
                 {p.name}
               </h3>
-              <p className="relative mt-1.5 text-[14px] leading-relaxed text-[var(--color-fg-muted)]">
+              <p className="mt-1.5 text-[14px] leading-relaxed text-[var(--color-fg-muted)]">
                 {p.tagline}
               </p>
 
-              <span className="relative mt-6 inline-flex items-center gap-1.5 text-[12.5px] text-[var(--color-fg-dim)] transition group-hover:text-[var(--color-accent)]">
+              <span className="mt-6 inline-flex items-center gap-1.5 text-[12.5px] text-[var(--color-fg-dim)] transition group-hover:text-[var(--color-accent)]">
                 Read more <span aria-hidden>→</span>
               </span>
             </Link>

@@ -193,3 +193,97 @@ h1, h2, h3, h4, h5, h6 {
   html { scroll-behavior: auto; }
   .float-slow, .orbit-slow, .orbit-rev { animation: none; }
 }
+
+/* ============================================================================
+   GlowCard — cursor-tracking spotlight + colored border highlight.
+   Pointer state (--glow-x, --glow-y, --glow-xp) is set on :root by
+   <GlowPointer/> mounted once in layout.tsx — every .glow-card consumes it.
+   ============================================================================ */
+
+:root {
+  --glow-x: 0;
+  --glow-y: 0;
+  --glow-xp: 0.5;
+  --glow-yp: 0.5;
+}
+
+.glow-card {
+  /* Tunables — override with inline style or class to vary per card */
+  --gc-base: 195;        /* hue start: cyan-blue (~#3DE0EC family) */
+  --gc-spread: 35;       /* hue range: ends at ~230 (blue) */
+  --gc-radius: 16;       /* px — matches rounded-2xl */
+  --gc-border: 1.5;      /* px */
+  --gc-size: 240;        /* spotlight diameter (px) */
+  --gc-bg: rgba(10, 15, 26, 0.55);
+  --gc-bg-spot-opacity: 0.14;
+  --gc-border-spot-opacity: 1;
+  --gc-border-light-opacity: 0.7;
+
+  /* Computed */
+  --gc-border-size: calc(var(--gc-border) * 1px);
+  --gc-spotlight-size: calc(var(--gc-size) * 1px);
+  --gc-hue: calc(var(--gc-base) + (var(--glow-xp) * var(--gc-spread)));
+
+  position: relative;
+  border: var(--gc-border-size) solid rgba(255, 255, 255, 0.06);
+  border-radius: calc(var(--gc-radius) * 1px);
+  background-color: var(--gc-bg);
+  background-image: radial-gradient(
+    var(--gc-spotlight-size) var(--gc-spotlight-size) at
+    calc(var(--glow-x) * 1px)
+    calc(var(--glow-y) * 1px),
+    hsl(var(--gc-hue) 100% 65% / var(--gc-bg-spot-opacity)),
+    transparent 60%
+  );
+  background-size: calc(100% + (2 * var(--gc-border-size))) calc(100% + (2 * var(--gc-border-size)));
+  background-position: 50% 50%;
+  background-attachment: fixed;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: border-color 200ms ease, transform 200ms ease;
+}
+
+.glow-card::before,
+.glow-card::after {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: calc(var(--gc-border-size) * -1);
+  border: var(--gc-border-size) solid transparent;
+  border-radius: calc(var(--gc-radius) * 1px);
+  background-attachment: fixed;
+  background-size: calc(100% + (2 * var(--gc-border-size))) calc(100% + (2 * var(--gc-border-size)));
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  mask:
+    linear-gradient(transparent, transparent),
+    linear-gradient(white, white);
+  -webkit-mask:
+    linear-gradient(transparent, transparent),
+    linear-gradient(white, white);
+  mask-clip: padding-box, border-box;
+  -webkit-mask-clip: padding-box, border-box;
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+}
+
+.glow-card::before {
+  background-image: radial-gradient(
+    calc(var(--gc-spotlight-size) * 0.75) calc(var(--gc-spotlight-size) * 0.75) at
+    calc(var(--glow-x) * 1px)
+    calc(var(--glow-y) * 1px),
+    hsl(var(--gc-hue) 100% 60% / var(--gc-border-spot-opacity)),
+    transparent 100%
+  );
+  filter: brightness(1.4);
+}
+
+.glow-card::after {
+  background-image: radial-gradient(
+    calc(var(--gc-spotlight-size) * 0.5) calc(var(--gc-spotlight-size) * 0.5) at
+    calc(var(--glow-x) * 1px)
+    calc(var(--glow-y) * 1px),
+    hsl(0 0% 100% / var(--gc-border-light-opacity)),
+    transparent 100%
+  );
+}
