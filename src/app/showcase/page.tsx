@@ -1,16 +1,30 @@
+import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import Link from "next/link";
 import { products, type Product } from "@/lib/products";
+import { JsonLd, itemListSchema, breadcrumbSchema, siteUrl } from "@/lib/schema";
 
-export const metadata = { title: "Showcase" };
+export const metadata: Metadata = {
+  title: "Showcase — 30 production AI blueprints",
+  description:
+    "Browse 30 AI products built and shipped by Autico.ai — voice agents, automation, vision, data, and ops. Each one deployable for your team in under 30 days.",
+  alternates: { canonical: "/showcase" },
+  openGraph: {
+    title: "Showcase — 30 AI products built by Autico.ai",
+    description:
+      "30 production AI blueprints. Voice, vision, data, agents, automation, ops. Deployed in weeks.",
+    url: "/showcase",
+  },
+};
 
 const categoryColors: Record<Product["category"], string> = {
-  agent: "from-orange-500/20 to-orange-500/5",
-  automation: "from-amber-500/20 to-amber-500/5",
-  vision: "from-rose-500/20 to-rose-500/5",
-  data: "from-blue-500/20 to-blue-500/5",
-  voice: "from-violet-500/20 to-violet-500/5",
-  ops: "from-emerald-500/20 to-emerald-500/5",
+  agent: "from-cyan-500/20 to-cyan-500/5",
+  automation: "from-cyan-400/20 to-cyan-400/5",
+  vision: "from-blue-500/20 to-blue-500/5",
+  data: "from-blue-400/20 to-blue-400/5",
+  voice: "from-teal-400/20 to-teal-400/5",
+  ops: "from-emerald-400/20 to-emerald-400/5",
 };
 
 const statusLabel: Record<Product["status"], string> = {
@@ -30,23 +44,32 @@ export default function ShowcasePage() {
 
   return (
     <>
+      <JsonLd
+        data={[
+          itemListSchema(products, "/showcase"),
+          breadcrumbSchema([
+            { name: "Home", url: siteUrl },
+            { name: "Showcase", url: `${siteUrl}/showcase` },
+          ]),
+        ]}
+      />
       <Nav />
       <main>
         <section className="relative overflow-hidden border-b border-[var(--color-border)]">
-          <div className="absolute inset-0 bg-grid opacity-50" aria-hidden />
-          <div className="absolute inset-0 bg-radial-orange" aria-hidden />
+          <div className="ambient-glow" aria-hidden />
+          <div className="absolute inset-0 bg-grid" aria-hidden />
           <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-16 md:pt-28 md:pb-20">
             <div className="max-w-3xl">
               <p className="text-[12px] uppercase tracking-[0.2em] text-[var(--color-accent)]">Showcase</p>
-              <h1 className="mt-3 text-4xl md:text-6xl font-semibold tracking-[-0.03em] leading-[1.05]">
-                30 AI products. <span className="text-[var(--color-accent)]">Battle-tested blueprints.</span>
+              <h1 className="mt-3 font-display text-4xl md:text-6xl font-semibold tracking-[-0.03em] leading-[1.05]">
+                30 AI products. <span className="hero-gradient-text">Battle-tested blueprints.</span>
               </h1>
               <p className="mt-5 max-w-2xl text-[16px] md:text-[17px] leading-relaxed text-[var(--color-fg-muted)]">
                 Each product below is something we&rsquo;ve shipped, will ship, or can build for you in under 30 days.
                 Voted on by the team — top picks already in production.
               </p>
               <div className="mt-7 flex flex-wrap gap-2">
-                <span className="rounded-full border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 px-3 py-1 text-[12px] font-medium text-[var(--color-accent)]">
+                <span className="rounded-full border border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] px-3 py-1 text-[12px] font-medium text-[var(--color-accent)]">
                   {counts.live} Live
                 </span>
                 <span className="rounded-full border border-[var(--color-border-strong)] bg-[var(--color-bg-elev)] px-3 py-1 text-[12px] font-medium text-[var(--color-fg-muted)]">
@@ -67,7 +90,7 @@ export default function ShowcasePage() {
             <section key={cat} className="border-b border-[var(--color-border)]">
               <div className="mx-auto max-w-7xl px-6 py-16">
                 <div className="flex items-baseline justify-between mb-8">
-                  <h2 className="text-2xl md:text-3xl font-semibold tracking-tight capitalize">{cat}</h2>
+                  <h2 className="font-display text-2xl md:text-3xl font-semibold tracking-tight capitalize">{cat}</h2>
                   <span className="text-[12px] uppercase tracking-[0.18em] text-[var(--color-fg-dim)]">
                     {items.length} {items.length === 1 ? "product" : "products"}
                   </span>
@@ -75,8 +98,9 @@ export default function ShowcasePage() {
 
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {items.map((p) => (
-                    <article
+                    <Link
                       key={p.slug}
+                      href={`/showcase/${p.slug}`}
                       id={p.slug}
                       className="group relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6 transition hover:border-[var(--color-border-strong)] scroll-mt-24"
                     >
@@ -88,7 +112,7 @@ export default function ShowcasePage() {
                         </span>
                         <span className={`rounded-full px-2 py-0.5 text-[10.5px] uppercase tracking-wider ${
                           p.status === "live"
-                            ? "bg-[var(--color-accent)]/15 text-[var(--color-accent)]"
+                            ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
                             : p.status === "beta"
                               ? "bg-white/5 text-[var(--color-fg-muted)]"
                               : "bg-white/5 text-[var(--color-fg-dim)]"
@@ -97,20 +121,17 @@ export default function ShowcasePage() {
                         </span>
                       </div>
 
-                      <h3 className="relative mt-3 text-lg font-semibold tracking-tight transition group-hover:text-[var(--color-accent)]">
+                      <h3 className="relative mt-3 font-display text-lg font-semibold tracking-tight transition group-hover:text-[var(--color-accent)]">
                         {p.name}
                       </h3>
                       <p className="relative mt-1.5 text-[14px] leading-relaxed text-[var(--color-fg-muted)]">
                         {p.tagline}
                       </p>
 
-                      <a
-                        href="/#contact"
-                        className="relative mt-6 inline-flex items-center gap-1.5 text-[12.5px] text-[var(--color-fg-dim)] transition hover:text-[var(--color-accent)]"
-                      >
-                        Talk to us about this <span aria-hidden>→</span>
-                      </a>
-                    </article>
+                      <span className="relative mt-6 inline-flex items-center gap-1.5 text-[12.5px] text-[var(--color-fg-dim)] transition group-hover:text-[var(--color-accent)]">
+                        Read more <span aria-hidden>→</span>
+                      </span>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -120,18 +141,18 @@ export default function ShowcasePage() {
 
         <section className="border-b border-[var(--color-border)]">
           <div className="mx-auto max-w-3xl px-6 py-20 text-center">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight">
               Want one of these built for you?
             </h2>
             <p className="mt-4 text-[16px] leading-relaxed text-[var(--color-fg-muted)]">
               Pick a blueprint above or describe your own. We&rsquo;ll come back with a fixed-price, fixed-timeline build.
             </p>
-            <a
+            <Link
               href="/#contact"
-              className="mt-8 inline-flex h-11 items-center rounded-lg bg-[var(--color-accent)] px-5 text-[14px] font-semibold text-black transition hover:bg-[var(--color-accent-hover)] glow-orange"
+              className="mt-8 inline-flex h-11 items-center rounded-lg bg-[var(--color-accent)] px-5 text-[14px] font-semibold text-[var(--color-on-accent)] transition hover:bg-[var(--color-accent-hover)] glow-accent"
             >
               Book a discovery call
-            </a>
+            </Link>
           </div>
         </section>
       </main>

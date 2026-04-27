@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { JsonLd, organizationSchema, websiteSchema, professionalServiceSchema } from "@/lib/schema";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
           href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700&display=swap"
         />
+        <JsonLd data={[organizationSchema, websiteSchema, professionalServiceSchema]} />
       </head>
       <body>{children}</body>
     </html>

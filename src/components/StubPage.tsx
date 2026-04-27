@@ -10,11 +10,11 @@ export default function StubPage({ title, blurb }: { title: string; blurb: strin
         <section className="border-b border-[var(--color-border)]">
           <div className="mx-auto max-w-3xl px-6 py-32 text-center">
             <p className="text-[12px] uppercase tracking-[0.2em] text-[var(--color-accent)]">{title}</p>
-            <h1 className="mt-3 text-4xl md:text-5xl font-semibold tracking-tight">Coming soon.</h1>
+            <h1 className="mt-3 font-display text-4xl md:text-5xl font-semibold tracking-tight">Coming soon.</h1>
             <p className="mt-6 text-[16px] text-[var(--color-fg-muted)] leading-relaxed">{blurb}</p>
             <Link
               href="/"
-              className="mt-10 inline-flex h-11 items-center rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-bg-elev)] px-5 text-[14px] font-medium text-[var(--color-fg)] transition hover:bg-white/5"
+              className="mt-10 inline-flex h-11 items-center rounded-lg border border-[var(--color-border-strong)] glass-card px-5 text-[14px] font-medium transition hover:text-[var(--color-accent)]"
             >
               ← Back to home
             </Link>
