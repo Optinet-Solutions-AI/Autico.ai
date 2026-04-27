@@ -129,7 +129,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <Link
                 href="/#contact"
-                className="inline-flex h-11 items-center gap-2 rounded-lg bg-[var(--color-accent)] px-5 text-[14px] font-semibold text-[var(--color-on-accent)] transition glow-accent hover:bg-[var(--color-accent-hover)]"
+                className="inline-flex h-11 items-center gap-2 rounded-lg bg-[var(--color-blue)] px-5 text-[14px] font-semibold text-white transition hover:bg-[var(--color-blue-hover)] shadow-[0_8px_28px_-4px_rgba(61,160,236,0.45)]"
               >
                 Build {product.name} for us →
               </Link>

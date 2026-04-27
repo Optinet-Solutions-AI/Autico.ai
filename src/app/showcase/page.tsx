@@ -149,7 +149,7 @@ export default function ShowcasePage() {
             </p>
             <Link
               href="/#contact"
-              className="mt-8 inline-flex h-11 items-center rounded-lg bg-[var(--color-accent)] px-5 text-[14px] font-semibold text-[var(--color-on-accent)] transition hover:bg-[var(--color-accent-hover)] glow-accent"
+              className="mt-8 inline-flex h-11 items-center rounded-lg bg-[var(--color-blue)] px-5 text-[14px] font-semibold text-white transition hover:bg-[var(--color-blue-hover)] shadow-[0_8px_28px_-4px_rgba(61,160,236,0.45)]"
             >
               Book a discovery call
             </Link>

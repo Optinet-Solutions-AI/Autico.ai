@@ -78,7 +78,7 @@ export default function Newsletter() {
               <button
                 type="submit"
                 disabled={state === "loading"}
-                className="h-11 rounded-lg bg-[var(--color-accent)] text-[14px] font-semibold text-black transition hover:bg-[var(--color-accent-hover)] disabled:opacity-60"
+                className="h-11 rounded-lg bg-[var(--color-blue)] text-[14px] font-semibold text-white transition hover:bg-[var(--color-blue-hover)] disabled:opacity-60"
               >
                 {state === "loading" ? "Sending…" : state === "success" ? "Sent ✓" : "Book a call"}
               </button>
