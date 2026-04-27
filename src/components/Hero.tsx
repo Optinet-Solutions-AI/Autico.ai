@@ -1,6 +1,7 @@
 import Link from "next/link";
 import HeroVisual from "@/components/HeroVisual";
 import { HexLogo } from "@/components/HexLogo";
+import FloatingPaths from "@/components/FloatingPaths";
 
 const features = [
   {
@@ -49,8 +50,8 @@ export default function Hero() {
   return (
     <section className="relative overflow-hidden">
       <div className="ambient-glow" aria-hidden />
+      <FloatingPaths />
       <div className="starfield" aria-hidden />
-      <div className="wave-grid" aria-hidden />
 
       <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-24 md:pt-28 md:pb-32 lg:pt-32 lg:pb-40">
         <div className="grid gap-12 lg:gap-16 lg:grid-cols-[1.05fr_1fr] items-center">
