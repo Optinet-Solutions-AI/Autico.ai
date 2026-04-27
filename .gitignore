@@ -1,0 +1,17 @@
+node_modules
+.next
+out
+dist
+.DS_Store
+.env
+.env.local
+.env.*.local
+.tmp
+*.log
+.vercel
+next-env.d.ts
+.code-review-graph
+tsconfig.tsbuildinfo
+
+# Internal-only — uncomment to commit if/when team approves
+Weekend_Challenge_Ideas.docx

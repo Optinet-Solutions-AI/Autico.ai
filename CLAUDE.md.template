@@ -1,0 +1,295 @@
+# CLAUDE.md — Autico.ai
+
+> **Read this file first in every conversation.** This is the source of truth for the project.
+> Update it whenever reality drifts.
+
+---
+
+## Project Overview
+
+**Autico.ai** is the marketing and portfolio website for our AI agency. It showcases our services and a curated portfolio of 30 in-house AI product concepts, and converts visitors into discovery calls / leads.
+
+**Business purpose:** Establish brand presence at `autico.ai`, position the agency, and drive inbound for paid AI build engagements. The 30 products double as proof-of-capability and as standalone offers.
+
+- **Domain:** `autico.ai` (registrar: TBD — confirm)
+- **Frontend:** [stack TBD — proposing **Next.js 15 + Tailwind CSS + shadcn/ui**] — deployed on **Vercel**
+- **Backend / API:** [TBD — proposing **Next.js Route Handlers** for contact form + lead capture; no separate API server needed initially]
+- **Database:** [TBD — proposing **Supabase (Postgres)** for leads + product CMS, or static MDX if we want zero-DB to start]
+- **Auth:** Not required for v1 (admin-only edits via repo); add Supabase Auth if/when we need a CMS UI
+- **External services:**
+  - **Resend** (transactional email for contact form)
+  - **Google Gemini 2.5 Flash Image** ("nano-banana") — generate hero/product imagery so we don't infringe on the reference site's assets
+  - **Plausible** or **Vercel Analytics** (privacy-friendly analytics)
+  - **Cloudflare** (DNS + CDN, optional)
+
+**Design inspiration:** "Open Clo" (reference URL TBD — confirm exact site). Replicate the **theme + layout language**, NOT the assets.
+**Brand palette:** black + orange (exact hex values TBD — see Brand section).
+**Hard rule:** new logo + icon set, distinct from the reference. No copied imagery, copy, or trademarks.
+
+---
+
+## How the App Works
+
+```
+1. Visitor lands on autico.ai (Vercel edge)
+   ↓
+2. Marketing pages render (mostly static / ISR) — Home, Services, Products (30), About, Contact
+   ↓
+3. Visitor submits contact form OR clicks "Book a call"
+   ↓
+4. POST /api/lead → validate (Zod) → insert into Supabase `leads` → send Resend email to john@optinetsolutions.com
+   ↓
+5. Success toast in UI; lead visible in Supabase dashboard / forwarded to inbox
+```
+
+---
+
+## Architecture
+
+```
+┌────────────────────────────────────┐
+│  Frontend (Next.js App Router)     │  React 19 + Tailwind + shadcn/ui
+│  Marketing pages, product gallery  │
+└──────────────┬─────────────────────┘
+               │ Server Actions / Route Handlers
+               ▼
+┌────────────────────────────────────┐
+│  API Layer (Next.js /app/api)      │  TypeScript
+│  Lead capture, contact, sitemap    │──────► Supabase (leads, products)
+└──────────────┬─────────────────────┘──────► Resend (notifications)
+               │
+               ▼
+┌────────────────────────────────────┐
+│  Content Source                    │  MDX in /content/products  OR  Supabase `products` table
+│  30 product entries + services     │
+└────────────────────────────────────┘
+```
+
+### Golden Rules
+1. **Frontend is DUMB** — render content, fire form actions, no business logic.
+2. **API is the BRAIN** — validation, persistence, email, rate-limiting live server-side.
+3. **Content is the MEMORY** — product copy lives in MDX/DB, never hardcoded in components.
+4. **No reference-site assets** — every image, icon, and logo is original (generated or designed).
+5. **Black + orange only** — no palette drift without explicit approval.
+
+---
+
+## Directory Structure
+
+```
+Autico.ai/
+│
+├── CLAUDE.md.template            ← This file (project source of truth)
+├── README.md                     ← Human setup instructions
+├── .env.local                    ← Secrets (NEVER commit)
+├── .env.example                  ← Key names only
+│
+├── docs/
+│   ├── brand.md                  ← Logo, colors, type, voice
+│   ├── design-system.md          ← Components, spacing, motion rules
+│   ├── products.md               ← The 30 products — canonical list
+│   ├── deployment.md             ← Vercel + DNS steps
+│   └── decisions.md              ← ADRs (why we picked X over Y)
+│
+├── content/
+│   └── products/                 ← One MDX file per product (if using MDX)
+│       └── 01-product-name.mdx
+│
+├── public/
+│   ├── logo.svg                  ← New Autico logo (do NOT reuse reference)
+│   ├── favicon.ico
+│   └── og/                       ← Open Graph images per page
+│
+├── src/
+│   ├── app/                      ← Next.js App Router
+│   │   ├── layout.tsx
+│   │   ├── page.tsx              ← Home
+│   │   ├── services/page.tsx
+│   │   ├── products/
+│   │   │   ├── page.tsx          ← Gallery (30 cards)
+│   │   │   └── [slug]/page.tsx   ← Product detail
+│   │   ├── about/page.tsx
+│   │   ├── contact/page.tsx
+│   │   └── api/
+│   │       ├── lead/route.ts
+│   │       └── contact/route.ts
+│   │
+│   ├── components/
+│   │   ├── ui/                   ← shadcn primitives
+│   │   ├── marketing/            ← Hero, FeatureGrid, Footer, Nav
+│   │   └── product/              ← ProductCard, ProductDetail
+│   │
+│   ├── lib/
+│   │   ├── db.ts                 ← Supabase client
+│   │   ├── email.ts              ← Resend wrapper
+│   │   ├── validation.ts         ← Zod schemas
+│   │   └── content.ts            ← MDX loader
+│   │
+│   └── styles/
+│       └── globals.css           ← Tailwind + brand tokens
+│
+├── tools/                        ← (WAT) Python scripts for one-off jobs
+│   ├── generate_product_image.py ← Gemini nano-banana → public/products/
+│   └── seed_products.py          ← Push 30 products to Supabase
+│
+├── workflows/                    ← (WAT) SOPs for recurring tasks
+│   ├── add_new_product.md
+│   ├── deploy.md
+│   └── refresh_brand_assets.md
+│
+└── .tmp/                         ← Disposable intermediates (gitignored)
+```
+
+---
+
+## Environment Variables
+
+| Variable | Purpose | Status |
+|----------|---------|--------|
+| `NEXT_PUBLIC_SITE_URL` | Canonical URL for SEO/OG | `https://autico.ai` |
+| `SUPABASE_URL` | Supabase project URL | TBD |
+| `SUPABASE_ANON_KEY` | Public Supabase key | TBD |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-only writes | TBD |
+| `RESEND_API_KEY` | Email delivery | TBD |
+| `LEAD_NOTIFY_EMAIL` | Where contact-form leads go | `john@optinetsolutions.com` |
+| `GEMINI_API_KEY` | Image gen (nano-banana) | TBD |
+| `PLAUSIBLE_DOMAIN` | Analytics | `autico.ai` |
+
+---
+
+## Database Schema (proposed)
+
+### `products`
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | uuid PK | |
+| `slug` | text unique | URL slug |
+| `name` | text | |
+| `tagline` | text | One-liner shown on card |
+| `description` | text | Long form, supports MDX |
+| `category` | text | e.g. `automation`, `vision`, `agent`, `data` |
+| `status` | text | `live` / `beta` / `concept` |
+| `cover_image` | text | Path under /public/products |
+| `order` | int | Display order in gallery |
+| `created_at` | timestamptz | |
+
+### `leads`
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | uuid PK | |
+| `name` | text | |
+| `email` | text | |
+| `company` | text nullable | |
+| `message` | text | |
+| `source` | text | `contact-form` / `book-call` / `product:<slug>` |
+| `created_at` | timestamptz | |
+
+> Skip the DB entirely if we go MDX-only for products and pipe leads straight to email.
+
+---
+
+## API Routes
+
+| Route | Method | Purpose |
+|-------|--------|---------|
+| `/api/lead` | POST | Capture lead → DB + email |
+| `/api/contact` | POST | Same as `/api/lead`, semantic alias for contact page |
+| `/api/health` | GET | Uptime check |
+
+All routes return: `{ success: true, data: {...} }` or `{ success: false, error: "message" }`
+
+---
+
+## Brand (TBD — needs your input)
+
+| Token | Value | Status |
+|-------|-------|--------|
+| `--bg` | `#000000` (or near-black, e.g. `#0A0A0A`) | confirm |
+| `--fg` | `#FFFFFF` | confirm |
+| `--accent` | orange — exact hex from reference TBD (e.g. `#FF5A1F`) | confirm |
+| `--accent-2` | dim orange for hover/secondary | derive |
+| Display font | TBD (reference uses ?) | confirm |
+| Body font | TBD (Inter / Geist Sans likely) | confirm |
+| Logo | **NEW** — must not resemble reference | TODO |
+| Icon set | **NEW** — pick a custom set (Lucide / Phosphor) and avoid reference's icon language | TODO |
+
+See `docs/brand.md` for the canonical version once finalized.
+
+---
+
+## What Should NOT Change Without Explicit Request
+
+- The 30 products list (canonical in `docs/products.md`)
+- Brand tokens (`--accent`, fonts, logo)
+- API response shape: `{ success, data | error }`
+- The "no copied assets from reference site" rule
+
+---
+
+## Known Constraints
+
+- **Gemini "nano-banana" (gemini-2.5-flash-image)** — generation cost per image; batch and cache outputs to `/public/products/`. Model ID: `gemini-2.5-flash-image`.
+- **Resend free tier:** 3,000 emails/month, 100/day — fine for lead notifications.
+- **Vercel Hobby:** fine for v1; upgrade if we add image-heavy ISR.
+- **Domain:** `autico.ai` — `.ai` TLD requires renewal awareness (typically 2-year minimum).
+- **IP risk:** zero copying from the reference site. Theme/layout inspiration is fine; assets, copy, and logos are not.
+
+---
+
+## Coding Standards
+
+### Do
+- TypeScript strict mode on
+- Server-only secrets stay server-only (never `NEXT_PUBLIC_*` for keys)
+- Validate every API input with Zod
+- One component = one responsibility
+- Tailwind utility-first; extract to component when used 3+ times
+- All forms have `loading`, `error`, and `success` states
+
+### Don't
+- Don't import reference-site assets, fonts via their CDN, or copy their copy
+- Don't store secrets in client components
+- Don't hardcode product data in components — read from MDX/DB
+- Don't commit `.env.local`, `node_modules`, `.next`, `.tmp/`
+
+---
+
+## Commit Messages (Conventional Commits)
+
+Format: `<type>(<scope>): <summary>`
+Scopes: `frontend`, `api`, `db`, `content`, `brand`, `docs`, `config`
+Types: `feat` `fix` `refactor` `style` `perf` `docs` `chore` `test`
+
+Output a suggested commit block at the end of every change set.
+
+---
+
+## Quick Reference
+
+| Task | Command |
+|------|---------|
+| Start dev | `pnpm dev` (port 3000) |
+| Type-check | `pnpm typecheck` |
+| Lint | `pnpm lint` |
+| Build | `pnpm build` |
+| Deploy | `git push origin main` (Vercel auto-deploys) |
+| Generate product image | `python tools/generate_product_image.py --slug <slug>` |
+| Seed products | `python tools/seed_products.py` |
+
+---
+
+## Open Questions (need your input before building)
+
+1. **Reference site URL** — exact URL of "Open Clo" so I can pull the layout/theme accurately.
+2. **The 30 products** — please paste/share the list (name + 1-line description each).
+3. **Tech stack confirm** — OK with Next.js 15 + Tailwind + Supabase + Vercel? Or do you want a static-only build (Astro) or a different stack?
+4. **Backend scope** — just contact form for v1, or also: blog, product CMS UI, booking calendar (Cal.com), Stripe checkout for any product?
+5. **Logo** — do you have one, or should I generate options via Gemini/Midjourney for you to pick?
+6. **Hosting** — Vercel OK, or prefer Cloudflare Pages / Netlify?
+7. **API keys / accounts I'll need from you:**
+   - `GEMINI_API_KEY` (Google AI Studio — free tier works for nano-banana)
+   - `RESEND_API_KEY` (free at resend.com)
+   - Supabase project URL + keys (if we use a DB)
+   - Vercel access (or I output deploy commands for you to run)
+   - DNS access for `autico.ai` (to point to Vercel)
+8. **Exact orange** — pick one: `#FF5A1F` (vivid), `#F97316` (Tailwind orange-500), or pull from the reference site once you share the URL.

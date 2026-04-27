@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Satoshi", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Clash Display", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+
+:root {
+  /* Surfaces — openclaw deep navy */
+  --color-bg: #050810;
+  --color-bg-elev: #0a0f1a;
+  --color-bg-card: rgba(10, 15, 26, 0.65);
+  --color-bg-card-strong: rgba(10, 15, 26, 0.85);
+
+  /* Foreground */
+  --color-fg: #f0f4ff;
+  --color-fg-muted: #8892b0;
+  --color-fg-dim: #5a6480;
+
+  /* Borders */
+  --color-border: rgba(136, 146, 176, 0.15);
+  --color-border-strong: rgba(136, 146, 176, 0.28);
+
+  /* PRIMARY ACCENT — cyan (openclaw brand) */
+  --color-accent: #00e5cc;
+  --color-accent-hover: #4dffe8;
+  --color-accent-deep: #00a89a;
+  --color-accent-soft: rgba(0, 229, 204, 0.15);
+  --color-accent-glow: rgba(0, 229, 204, 0.45);
+  --color-on-accent: #050810;
+
+  /* LOGO BLUE — for hex mark */
+  --color-logo-from: #4FA8E8;
+  --color-logo-to: #00e5cc;
+
+  /* SECONDARY — coral (used sparingly: alerts, "new" badges) */
+  --color-coral: #ff4d4d;
+  --color-coral-soft: rgba(255, 77, 77, 0.15);
+  --color-coral-glow: rgba(255, 77, 77, 0.4);
+}
+
+* {
+  border-color: var(--color-border);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  color-scheme: dark;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  letter-spacing: -0.005em;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+::selection { background: var(--color-accent); color: var(--color-on-accent); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 8px; border: 2px solid var(--color-bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-fg-dim); }
+
+/* Hero text gradient — openclaw signature: white → cyan */
+.hero-gradient-text {
+  background: linear-gradient(135deg, #f0f4ff 0%, #00e5cc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.logo-gradient-text {
+  background: linear-gradient(135deg, var(--color-logo-from) 0%, var(--color-logo-to) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Ambient glow — openclaw style */
+.ambient-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 60% at 80% 30%, rgba(0, 229, 204, 0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(79, 168, 232, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 90% 70% at 50% 90%, rgba(0, 229, 204, 0.06) 0%, transparent 65%);
+}
+
+.starfield {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20px 30px, rgba(255,255,255,0.6) 50%, transparent 50%),
+    radial-gradient(1.5px 1.5px at 40px 70px, rgba(255,255,255,0.4) 50%, transparent 50%),
+    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.5) 50%, transparent 50%),
+    radial-gradient(1.5px 1.5px at 130px 80px, rgba(255,255,255,0.3) 50%, transparent 50%),
+    radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,0.6) 50%, transparent 50%),
+    radial-gradient(1.5px 1.5px at 200px 60px, rgba(0,229,204,0.5) 50%, transparent 50%),
+    radial-gradient(1px 1px at 250px 150px, rgba(255,255,255,0.4) 50%, transparent 50%),
+    radial-gradient(1.5px 1.5px at 300px 40px, rgba(79,168,232,0.4) 50%, transparent 50%);
+  background-size: 350px 200px;
+  background-repeat: repeat;
+  opacity: 0.5;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 80%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 80%);
+}
+
+/* 3D wave grid — openclaw signature backdrop */
+.wave-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(0, 229, 204, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 229, 204, 0.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+  transform: perspective(1200px) rotateX(60deg) translateY(20%) scale(2);
+  transform-origin: center bottom;
+  mask-image: linear-gradient(to top, black 0%, black 30%, transparent 80%);
+  -webkit-mask-image: linear-gradient(to top, black 0%, black 30%, transparent 80%);
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(136, 146, 176, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(136, 146, 176, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 0%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 0%, transparent 80%);
+}
+
+.glow-accent {
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 204, 0.55),
+    0 8px 28px -4px rgba(0, 229, 204, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.glass-card {
+  background: var(--color-bg-card);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid var(--color-border);
+}
+
+.glass-card:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-bg-card-strong);
+}
+
+.cyan-divider {
+  height: 2px;
+  width: 60px;
+  background: linear-gradient(to right, var(--color-accent), transparent);
+  border-radius: 1px;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up { animation: fade-up 0.6s cubic-bezier(0.21, 0.65, 0.27, 1) both; }
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+.pulse-dot { animation: pulse-soft 2.4s ease-in-out infinite; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.float-slow { animation: float 6s ease-in-out infinite; }
+
+@keyframes orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.orbit-slow { animation: orbit 22s linear infinite; }
+.orbit-rev { animation: orbit 16s linear infinite reverse; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  html { scroll-behavior: auto; }
+  .float-slow, .orbit-slow, .orbit-rev { animation: none; }
+}
