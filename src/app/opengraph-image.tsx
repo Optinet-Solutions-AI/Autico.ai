@@ -55,7 +55,7 @@ export default function OG() {
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", color: "#5a6480", fontSize: 20 }}>
           <span>autico.ai</span>
-          <span>30 products • 12 industries</span>
+          <span>33 products • 11 builders</span>
         </div>
       </div>
     ),

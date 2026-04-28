@@ -5,6 +5,8 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { products, type Product } from "@/lib/products";
 import { JsonLd, productSchema, breadcrumbSchema, siteUrl } from "@/lib/schema";
+import { AuthorBadge } from "@/components/AuthorBadge";
+import { CategoryIcon, categoryLabel } from "@/components/CategoryIcon";
 
 export const dynamicParams = false;
 
@@ -45,15 +47,6 @@ const statusBlurb: Record<Product["status"], string> = {
   live: "In production with active customers.",
   beta: "Built and field-testing with select clients.",
   concept: "Validated demand, not yet built — first commission shapes it.",
-};
-
-const categoryLabel: Record<Product["category"], string> = {
-  agent: "Autonomous agents",
-  automation: "Workflow automation",
-  voice: "Voice AI",
-  data: "Data + analytics",
-  vision: "Computer vision",
-  ops: "AI operations",
 };
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -103,8 +96,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </nav>
 
             <div className="mt-6 flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-[var(--color-border-strong)] bg-[var(--color-bg-card)] px-2.5 py-0.5 text-[11.5px] uppercase tracking-[0.14em] text-[var(--color-fg-muted)]">
-                {categoryLabel[product.category]}
+              <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border-strong)] bg-[var(--color-bg-card)] px-3 py-1 text-[11.5px] uppercase tracking-[0.14em] text-[var(--color-fg-muted)]">
+                <CategoryIcon category={product.category} size={14} className="text-[var(--color-accent)]" />
+                {categoryLabel(product.category)}
               </span>
               <span
                 className={`rounded-full px-2.5 py-0.5 text-[11px] uppercase tracking-wider ${
@@ -115,12 +109,20 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               >
                 {statusLabel[product.status]}
               </span>
-              <span className="text-[12px] text-[var(--color-fg-dim)]">by {product.author}</span>
+              <span className="inline-flex items-center gap-1.5 text-[12px] text-[var(--color-fg-dim)]">
+                <AuthorBadge name={product.author} size={20} />
+                by {product.author}
+              </span>
             </div>
 
-            <h1 className="mt-5 font-display text-4xl md:text-6xl font-semibold leading-[1.05] tracking-[-0.03em]">
-              <span className="hero-gradient-text">{product.name}</span>
-            </h1>
+            <div className="mt-6 flex items-start gap-5">
+              <div className="hidden md:flex shrink-0 mt-1 h-14 w-14 items-center justify-center rounded-2xl bg-[var(--color-bg-card)] border border-[var(--color-border-strong)] text-[var(--color-blue)]">
+                <CategoryIcon category={product.category} size={28} />
+              </div>
+              <h1 className="font-display text-4xl md:text-6xl font-semibold leading-[1.05] tracking-[-0.03em]">
+                <span className="hero-gradient-text">{product.name}</span>
+              </h1>
+            </div>
 
             <p className="mt-5 max-w-2xl text-[17px] md:text-[18px] leading-relaxed text-[var(--color-fg-muted)]">
               {product.tagline}
@@ -137,7 +139,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 href="/showcase"
                 className="inline-flex h-11 items-center gap-2 rounded-lg border border-[var(--color-border-strong)] glass-card px-5 text-[14px] font-medium transition hover:text-[var(--color-accent)]"
               >
-                Back to all 30 products
+                Back to all {products.length} products
               </Link>
             </div>
           </div>
@@ -150,7 +152,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 Who it&rsquo;s for
               </h2>
               <p className="mt-3 text-[15.5px] leading-relaxed text-[var(--color-fg-muted)]">
-                Teams operating in {categoryLabel[product.category].toLowerCase()} who need a
+                Teams operating in {categoryLabel(product.category).toLowerCase()} who need a
                 production-grade implementation, not a demo. Typically 5–500 employee businesses
                 with a measurable problem this addresses today.
               </p>
@@ -190,21 +192,25 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <section className="border-b border-[var(--color-border)]">
             <div className="mx-auto max-w-4xl px-6 py-16">
               <h2 className="font-display text-2xl md:text-3xl font-semibold tracking-tight">
-                More in {categoryLabel[product.category].toLowerCase()}
+                More in {categoryLabel(product.category).toLowerCase()}
               </h2>
               <div className="mt-6 grid gap-4 sm:grid-cols-3">
                 {related.map((r) => (
                   <Link
                     key={r.slug}
                     href={`/showcase/${r.slug}`}
-                    className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-5 transition hover:border-[var(--color-border-strong)]"
+                    className="glow-card group p-5 block"
                   >
-                    <h3 className="font-display text-[15px] font-semibold tracking-tight group-hover:text-[var(--color-accent)] transition">
+                    <h3 className="font-display text-[15px] font-semibold tracking-tight group-hover:text-[var(--color-blue)] transition">
                       {r.name}
                     </h3>
                     <p className="mt-1 text-[13px] leading-relaxed text-[var(--color-fg-muted)]">
                       {r.tagline}
                     </p>
+                    <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] text-[var(--color-fg-dim)]">
+                      <AuthorBadge name={r.author} size={18} />
+                      {r.author}
+                    </span>
                   </Link>
                 ))}
               </div>
@@ -216,7 +222,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="mx-auto max-w-4xl px-6 py-10 flex items-center justify-between text-[13px]">
             <Link
               href={`/showcase/${prev.slug}`}
-              className="group flex items-center gap-2 text-[var(--color-fg-muted)] hover:text-[var(--color-fg)] transition"
+              className="group flex items-center gap-2 text-[var(--color-fg-muted)] hover:text-white transition"
             >
               <span aria-hidden className="transition-transform group-hover:-translate-x-0.5">←</span>
               <span>
@@ -226,7 +232,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </Link>
             <Link
               href={`/showcase/${next.slug}`}
-              className="group flex items-center gap-2 text-right text-[var(--color-fg-muted)] hover:text-[var(--color-fg)] transition"
+              className="group flex items-center gap-2 text-right text-[var(--color-fg-muted)] hover:text-white transition"
             >
               <span>
                 <span className="block text-[11px] uppercase tracking-[0.16em] text-[var(--color-fg-dim)]">Next</span>

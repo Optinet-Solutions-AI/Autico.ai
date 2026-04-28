@@ -1,6 +1,8 @@
 import Link from "next/link";
 import HeroVisual from "@/components/HeroVisual";
 import { HexLogo } from "@/components/HexLogo";
+import { products } from "@/lib/products";
+import NumberTicker from "@/components/NumberTicker";
 
 const features = [
   {
@@ -46,14 +48,16 @@ const features = [
 ];
 
 export default function Hero() {
+  const builders = new Set(products.map((p) => p.author)).size;
+
   return (
     <section className="relative overflow-hidden">
       <div className="ambient-glow" aria-hidden />
       <div className="starfield" aria-hidden />
+      <div className="wave-grid" aria-hidden />
 
       <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-24 md:pt-28 md:pb-32 lg:pt-32 lg:pb-40">
         <div className="grid gap-12 lg:gap-16 lg:grid-cols-[1.05fr_1fr] items-center">
-          {/* LEFT — text + tagline + features */}
           <div className="relative">
             <div className="fade-up flex items-center gap-4">
               <HexLogo size={64} />
@@ -76,7 +80,7 @@ export default function Hero() {
               style={{ animationDelay: "120ms" }}
             >
               We design, build, and run autonomous AI products for ambitious teams.
-              From voice agents to data pipelines — 30+ proven blueprints, deployed in weeks.
+              From voice agents to data pipelines — {products.length}+ proven blueprints, deployed in weeks.
             </p>
 
             <div
@@ -94,12 +98,43 @@ export default function Hero() {
                 href="/showcase"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-[var(--color-border-strong)] glass-card px-5 text-[14.5px] font-medium text-white transition hover:text-[var(--color-accent)]"
               >
-                See 30 products
+                See {products.length} products
                 <span aria-hidden>→</span>
               </Link>
             </div>
 
-            {/* 4 feature cells — openclaw signature */}
+            {/* Stats strip with NumberTicker */}
+            <div
+              className="fade-up mt-10 grid grid-cols-3 gap-4 max-w-md"
+              style={{ animationDelay: "210ms" }}
+            >
+              <div>
+                <div className="font-display text-2xl md:text-3xl font-semibold tracking-tight text-white">
+                  <NumberTicker value={products.length} />
+                </div>
+                <div className="mt-0.5 text-[11px] uppercase tracking-[0.14em] text-[var(--color-fg-dim)]">
+                  AI products
+                </div>
+              </div>
+              <div>
+                <div className="font-display text-2xl md:text-3xl font-semibold tracking-tight text-white">
+                  <NumberTicker value={builders} />
+                </div>
+                <div className="mt-0.5 text-[11px] uppercase tracking-[0.14em] text-[var(--color-fg-dim)]">
+                  builders
+                </div>
+              </div>
+              <div>
+                <div className="font-display text-2xl md:text-3xl font-semibold tracking-tight text-white">
+                  &lt;<NumberTicker value={30} duration={1200} />d
+                </div>
+                <div className="mt-0.5 text-[11px] uppercase tracking-[0.14em] text-[var(--color-fg-dim)]">
+                  to deploy
+                </div>
+              </div>
+            </div>
+
+            {/* 4 feature cells */}
             <div
               className="fade-up mt-12 grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-6"
               style={{ animationDelay: "240ms" }}
@@ -118,7 +153,6 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* RIGHT — abstract AI visual */}
           <div className="fade-up relative" style={{ animationDelay: "300ms" }}>
             <HeroVisual />
           </div>

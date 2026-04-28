@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { products, type Product } from "@/lib/products";
+import { AuthorBadge } from "@/components/AuthorBadge";
 
 const statusLabel: Record<Product["status"], string> = {
   live: "Live",
@@ -15,7 +16,7 @@ export default function Showcase() {
           <div className="max-w-2xl">
             <p className="text-[12px] uppercase tracking-[0.2em] text-[var(--color-accent)]">Showcase</p>
             <h2 className="mt-2 font-display text-3xl md:text-4xl font-semibold tracking-tight">
-              30 AI products. Battle-tested blueprints.
+              {products.length} AI products. Battle-tested blueprints.
             </h2>
             <p className="mt-4 text-[var(--color-fg-muted)] text-[15.5px] leading-relaxed">
               Each one is something we&rsquo;ve shipped, will ship, or can ship for you in under 30 days.
@@ -55,9 +56,15 @@ export default function Showcase() {
                 {p.tagline}
               </p>
 
-              <span className="mt-6 inline-flex items-center gap-1.5 text-[12.5px] text-[var(--color-fg-dim)] transition group-hover:text-[var(--color-accent)]">
-                Read more <span aria-hidden>→</span>
-              </span>
+              <div className="mt-6 flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 text-[12.5px] text-[var(--color-fg-dim)] transition group-hover:text-[var(--color-accent)]">
+                  Read more <span aria-hidden>→</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-[11px] text-[var(--color-fg-dim)]">
+                  <AuthorBadge name={p.author} size={20} />
+                  {p.author}
+                </span>
+              </div>
             </Link>
           ))}
         </div>

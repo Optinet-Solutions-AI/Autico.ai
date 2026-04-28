@@ -4,16 +4,15 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import { products, type Product } from "@/lib/products";
 import { JsonLd, itemListSchema, breadcrumbSchema, siteUrl } from "@/lib/schema";
+import { AuthorBadge } from "@/components/AuthorBadge";
 
 export const metadata: Metadata = {
-  title: "Showcase — 30 production AI blueprints",
-  description:
-    "Browse 30 AI products built and shipped by Autico.ai — voice agents, automation, vision, data, and ops. Each one deployable for your team in under 30 days.",
+  title: `Showcase — ${products.length} production AI blueprints`,
+  description: `Browse ${products.length} AI products built and shipped by Autico.ai — voice agents, automation, vision, data, and ops. Each one deployable for your team in under 30 days.`,
   alternates: { canonical: "/showcase" },
   openGraph: {
-    title: "Showcase — 30 AI products built by Autico.ai",
-    description:
-      "30 production AI blueprints. Voice, vision, data, agents, automation, ops. Deployed in weeks.",
+    title: `Showcase — ${products.length} AI products built by Autico.ai`,
+    description: `${products.length} production AI blueprints. Voice, vision, data, agents, automation, ops. Deployed in weeks.`,
     url: "/showcase",
   },
 };
@@ -32,6 +31,8 @@ export default function ShowcasePage() {
     beta: products.filter((p) => p.status === "beta").length,
     concept: products.filter((p) => p.status === "concept").length,
   };
+  const builders = new Set(products.map((p) => p.author)).size;
+  const categoriesUsed = new Set(products.map((p) => p.category)).size;
 
   return (
     <>
@@ -53,7 +54,7 @@ export default function ShowcasePage() {
             <div className="max-w-3xl">
               <p className="text-[12px] uppercase tracking-[0.2em] text-[var(--color-accent)]">Showcase</p>
               <h1 className="mt-3 font-display text-4xl md:text-6xl font-semibold tracking-[-0.03em] leading-[1.05]">
-                30 AI products. <span className="hero-gradient-text">Battle-tested blueprints.</span>
+                {products.length} AI products. <span className="hero-gradient-text">Battle-tested blueprints.</span>
               </h1>
               <p className="mt-5 max-w-2xl text-[16px] md:text-[17px] leading-relaxed text-[var(--color-fg-muted)]">
                 Each product below is something we&rsquo;ve shipped, will ship, or can build for you in under 30 days.
@@ -68,6 +69,12 @@ export default function ShowcasePage() {
                 </span>
                 <span className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elev)] px-3 py-1 text-[12px] font-medium text-[var(--color-fg-dim)]">
                   {counts.concept} Concept
+                </span>
+                <span className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elev)] px-3 py-1 text-[12px] font-medium text-[var(--color-fg-dim)]">
+                  {builders} builders
+                </span>
+                <span className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elev)] px-3 py-1 text-[12px] font-medium text-[var(--color-fg-dim)]">
+                  {categoriesUsed} categories
                 </span>
               </div>
             </div>
@@ -96,7 +103,8 @@ export default function ShowcasePage() {
                       className="glow-card group p-6 block scroll-mt-24"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--color-fg-dim)]">
+                        <span className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.16em] text-[var(--color-fg-dim)]">
+                          <AuthorBadge name={p.author} size={20} />
                           by {p.author}
                         </span>
                         <span className={`rounded-full px-2 py-0.5 text-[10.5px] uppercase tracking-wider ${

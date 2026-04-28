@@ -195,6 +195,49 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================================================
+   Marquee — pure-CSS infinite horizontal scroll, two-rail track.
+   Edges fade via mask. Optional pause-on-hover via data attribute.
+   ============================================================================ */
+
+.marquee {
+  position: relative;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll var(--marquee-duration, 40s) linear infinite;
+  will-change: transform;
+}
+
+.marquee[data-direction="right"] .marquee-track {
+  animation-direction: reverse;
+}
+
+.marquee[data-pause="true"]:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-content {
+  display: flex;
+  flex-shrink: 0;
+  gap: 1rem;
+  padding-right: 1rem;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+
+/* ============================================================================
    GlowCard — cursor-tracking spotlight + colored border highlight.
    Pointer state (--glow-x, --glow-y, --glow-xp) is set on :root by
    <GlowPointer/> mounted once in layout.tsx — every .glow-card consumes it.
